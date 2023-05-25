@@ -21,6 +21,7 @@ const FILE_G: usize = 6;
 const FILE_H: usize = 7;
 
 
+#[derive(Copy, Clone)]
 enum Colour {
     White,
     Black,
