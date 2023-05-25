@@ -45,7 +45,7 @@ impl Display for Square {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             Square::Empty => write!(f, " "),
-            Square::Piece(piece) => write!(f, "{}", piece.symbol),
+            Square::Piece(piece) => write!(f, "{}", piece),
         }
     }
 }
@@ -97,10 +97,12 @@ fn main() {
     let my_piece = Piece {
         name: String::from("King"),
         symbol: 'K',
-        colour: Colour::White,
+        colour: my_colour,
     };
-    let r1 = &my_piece;
-    let my_square: Square = Square::Piece(x my_piece);
+    let my_square: Square = Square::Piece(my_piece);
+
+    println!("My colour is: {}", my_colour);
+    println!("My square is: {}", my_square);
 
     let first_rank = generate_first_rank();
 
@@ -164,7 +166,7 @@ fn main() {
 fn print_board(board: [[char; 8]; 8]) {
     for rank in board {
         for square in rank {
-            print!("{square} ");
+            print!("{} ", square);
         }
         println!();
     }
