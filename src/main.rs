@@ -62,6 +62,36 @@ impl Display for Piece {
     }
 }
 
+fn generate_first_rank() -> [Piece; 5] {
+    let rook = Piece {
+        name: String::from("Rook"),
+        symbol: 'R',
+        colour: Colour::White,
+    };
+    let knight = Piece {
+        name: String::from("Knight"),
+        symbol: 'N',
+        colour: Colour::White,
+    };
+    let bishop = Piece {
+        name: String::from("Bishop"),
+        symbol: 'B',
+        colour: Colour::White,
+    };
+    let queen = Piece {
+        name: String::from("Queen"),
+        symbol: 'Q',
+        colour: Colour::White,
+    };
+    let king = Piece {
+        name: String::from("King"),
+        symbol: 'K',
+        colour: Colour::White,
+    };
+
+    [rook, knight, bishop, queen, king]
+}
+
 fn main() {
     let my_colour = Colour::White;
     let my_piece = Piece {
@@ -72,9 +102,11 @@ fn main() {
     let r1 = &my_piece;
     let my_square: Square = Square::Piece(x my_piece);
 
-    println!("My colour is: {my_colour}");
-    println!("My piece is: {my_piece}");
-    println!("My square is: {my_square}");
+    let first_rank = generate_first_rank();
+
+    for piece in first_rank {
+        println!("{} ", piece);
+    }
 
     return;
 
