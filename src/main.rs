@@ -51,42 +51,68 @@ impl Display for Square {
 }
 
 struct Piece {
-    name: String,
-    symbol: char,
     colour: Colour,
+    kind: PieceKind,
 }
 
 impl Display for Piece {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.colour, self.name)
+        write!(f, "{} {}", self.colour, get_piece_name(self))
+    }
+}
+
+#[derive(Copy, Clone)]
+enum PieceKind {
+    Pawn,
+    Knight,
+    Bishop,
+    Rook,
+    Queen,
+    King,
+}
+
+fn get_piece_name(piece: &Piece) -> String {
+    match piece.kind {
+        PieceKind::Pawn => String::from("Pawn"),
+        PieceKind::Knight => String::from("Knight"),
+        PieceKind::Bishop => String::from("Bishop"),
+        PieceKind::Rook => String::from("Rook"),
+        PieceKind::Queen => String::from("Queen"),
+        PieceKind::King => String::from("King"),
+    }
+}
+
+fn get_piece_symbol(piece: &Piece) -> char {
+    match piece.kind {
+        PieceKind::Pawn => 'P',
+        PieceKind::Knight => 'N',
+        PieceKind::Bishop => 'B',
+        PieceKind::Rook => 'R',
+        PieceKind::Queen => 'Q',
+        PieceKind::King => 'K',
     }
 }
 
 fn generate_first_rank() -> [Piece; 5] {
     let rook = Piece {
-        name: String::from("Rook"),
-        symbol: 'R',
         colour: Colour::White,
+        kind: PieceKind::Rook,
     };
     let knight = Piece {
-        name: String::from("Knight"),
-        symbol: 'N',
         colour: Colour::White,
+        kind: PieceKind::Knight,
     };
     let bishop = Piece {
-        name: String::from("Bishop"),
-        symbol: 'B',
         colour: Colour::White,
+        kind: PieceKind::Bishop,
     };
     let queen = Piece {
-        name: String::from("Queen"),
-        symbol: 'Q',
         colour: Colour::White,
+        kind: PieceKind::Queen,
     };
     let king = Piece {
-        name: String::from("King"),
-        symbol: 'K',
         colour: Colour::White,
+        kind: PieceKind::King,
     };
 
     [rook, knight, bishop, queen, king]
@@ -94,15 +120,8 @@ fn generate_first_rank() -> [Piece; 5] {
 
 fn main() {
     let my_colour = Colour::White;
-    let my_piece = Piece {
-        name: String::from("King"),
-        symbol: 'K',
-        colour: my_colour,
-    };
-    let my_square: Square = Square::Piece(my_piece);
 
     println!("My colour is: {}", my_colour);
-    println!("My square is: {}", my_square);
 
     let first_rank = generate_first_rank();
 
