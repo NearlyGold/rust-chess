@@ -93,29 +93,26 @@ fn get_piece_symbol(piece: &Piece) -> char {
     }
 }
 
-fn generate_first_rank() -> [Piece; 5] {
-    let rook = Piece {
-        colour: Colour::White,
-        kind: PieceKind::Rook,
-    };
-    let knight = Piece {
-        colour: Colour::White,
-        kind: PieceKind::Knight,
-    };
-    let bishop = Piece {
-        colour: Colour::White,
-        kind: PieceKind::Bishop,
-    };
-    let queen = Piece {
-        colour: Colour::White,
-        kind: PieceKind::Queen,
-    };
-    let king = Piece {
-        colour: Colour::White,
-        kind: PieceKind::King,
-    };
+fn generate_pieces(colour: Colour) -> Vec<Piece> {
+    const PIECE_SET: [PieceKind; 16] = [
+        PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn,
+        PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn,
+        PieceKind::Rook, PieceKind::Rook, PieceKind::Knight, PieceKind::Knight,
+        PieceKind::Bishop, PieceKind::Bishop, PieceKind::Queen, PieceKind::King,
+    ];
 
-    [rook, knight, bishop, queen, king]
+    let mut new_piece_set: Vec<Piece> = Vec::new();
+
+    for i in 0..15 {
+        new_piece_set.push(
+            Piece {
+                colour,
+                kind: PIECE_SET[i]
+            }
+        );
+    }
+
+    new_piece_set
 }
 
 fn main() {
@@ -123,9 +120,9 @@ fn main() {
 
     println!("My colour is: {}", my_colour);
 
-    let first_rank = generate_first_rank();
+    let my_pieces = generate_pieces(Colour::White);
 
-    for piece in first_rank {
+    for piece in my_pieces {
         println!("{} ", piece);
     }
 
