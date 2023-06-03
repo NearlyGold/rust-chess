@@ -244,6 +244,11 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
         Square::Piece(p) => p,
     };
 
+    // The source piece must be the player's colour
+    if piece.colour != player_colour {
+        return false;
+    }
+
     true
 }
 
@@ -267,7 +272,8 @@ fn main() {
     print_board_square(&board, File::E, Rank::Two);
 
     println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::One))); // Fail -- same square
-    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::Two))); // Pass -- piece exists
+    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::Two))); // Pass -- player piece
+    println!("{}", is_valid_move(my_colour, &board, (File::H, Rank::Eight), (File::F, Rank::Two))); // Fail -- opponent piece
     println!("{}", is_valid_move(my_colour, &board, (File::D, Rank::Four), (File::A, Rank::Two))); // Fail -- no piece
 }
 
