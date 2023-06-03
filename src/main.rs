@@ -3,7 +3,7 @@ use std::io;
 use rand::Rng;
 
 
-#[derive(Copy, Clone, Eq, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 enum Rank {
     One,
     Two,
@@ -31,7 +31,7 @@ impl Rank {
 }
 
 
-#[derive(Copy, Clone, Eq, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 enum File {
     A,
     B,
@@ -59,7 +59,7 @@ impl File {
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 enum Colour {
     White,
     Black,
