@@ -198,32 +198,6 @@ fn main() {
 
     print_board_square(&board, FILE_D, RANK_1);
     print_board_square(&board, FILE_E, RANK_2);
-
-    //
-    // println!("Welcome to chess!");
-    //
-    // println!("Please tell me your favourite piece.");
-    //
-    // let mut piece = String::new();
-    //
-    // io::stdin()
-    //     .read_line(&mut piece)
-    //     .expect("Failed to read line");
-    //
-    // println!("Your favourite piece is {piece}!");
-    //
-    // println!("Let's start a game. Would you like to play as white or black?");
-    // println!("Or leave blank for a random choice.");
-    //
-    // let mut choice = String::new();
-    //
-    // io::stdin().read_line(&mut choice).expect("Failed to read choice");
-    // println!("You have chosen {choice}");
-    //
-    // // Lets start a game
-    //
-    // let coin_toss = rand::thread_rng().gen_range(1..=2);
-    // println!("The coin toss is: {coin_toss}");
 }
 
 fn print_board(board: &[[Square; 8]; 8]) {
