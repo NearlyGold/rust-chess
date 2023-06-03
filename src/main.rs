@@ -176,6 +176,10 @@ fn generate_board() -> [[Square; 8]; 8] {
     ]
 }
 
+fn print_board_square(board: &[[Square; 8]; 8], file: usize, rank: usize) {
+    println!("{}", board[rank][file]);
+}
+
 fn main() {
     let my_colour = Colour::White;
 
@@ -191,6 +195,9 @@ fn main() {
     let mut board = generate_board();
 
     print_board(&board);
+
+    print_board_square(&board, FILE_D, RANK_1);
+    print_board_square(&board, FILE_E, RANK_2);
 
     //
     // println!("Welcome to chess!");
