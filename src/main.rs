@@ -107,6 +107,10 @@ enum PieceKind {
     King,
 }
 
+
+type Board = [[Square; 8]; 8];
+
+
 fn get_piece_name(piece: &Piece) -> String {
     match piece.kind {
         PieceKind::Pawn => String::from("Pawn"),
@@ -151,7 +155,7 @@ fn generate_piece_set(colour: Colour) -> Vec<Piece> {
     new_piece_set
 }
 
-fn generate_board() -> [[Square; 8]; 8] {
+fn generate_board() -> Board {
     [
         [
             Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Rook}),
@@ -212,7 +216,7 @@ fn generate_board() -> [[Square; 8]; 8] {
     ]
 }
 
-fn print_board_square(board: &[[Square; 8]; 8], file: File, rank: Rank) {
+fn print_board_square(board: &Board, file: File, rank: Rank) {
     println!("{}", board[rank.value()][file.value()]);
 }
 
@@ -236,7 +240,7 @@ fn main() {
     print_board_square(&board, File::E, Rank::Two);
 }
 
-fn print_board(board: &[[Square; 8]; 8]) {
+fn print_board(board: &Board) {
     for rank in board {
         for square in rank {
             print!("| ");
