@@ -3,6 +3,7 @@ use std::io;
 use rand::Rng;
 
 
+#[derive(Copy, Clone, Eq, PartialEq)]
 enum Rank {
     One,
     Two,
@@ -30,6 +31,7 @@ impl Rank {
 }
 
 
+#[derive(Copy, Clone, Eq, PartialEq)]
 enum File {
     A,
     B,
@@ -109,6 +111,7 @@ enum PieceKind {
 
 
 type Board = [[Square; 8]; 8];
+type Position = (File, Rank);
 
 
 fn get_piece_name(piece: &Piece) -> String {
@@ -220,6 +223,30 @@ fn print_board_square(board: &Board, file: File, rank: Rank) {
     println!("{}", board[rank.value()][file.value()]);
 }
 
+// Rules
+// * The dest square must not be the source square
+// * A piece must exist on the source square
+// * The piece must be the current player's colour
+// * The dest square must be empty, or have a piece of the opponent's colour that is not the king.
+// * The piece must be allowed to move in the way required to reach the destination position.
+// * After moving, the player's king must not be in check.
+fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position, dest_position: Position) -> bool {
+    // The source and destination positions must not be the same
+    if source_position == dest_position {
+        return false;
+    }
+
+    let source_square: &Square = &board[source_position.1.value()][source_position.0.value()];
+
+    // A piece must exist on the source square
+    let piece: &Piece = match source_square {
+        Square::Empty => return false,
+        Square::Piece(p) => p,
+    };
+
+    true
+}
+
 fn main() {
     let my_colour = Colour::White;
 
@@ -238,6 +265,10 @@ fn main() {
 
     print_board_square(&board, File::D, Rank::One);
     print_board_square(&board, File::E, Rank::Two);
+
+    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::One))); // Fail -- same square
+    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::Two))); // Pass -- piece exists
+    println!("{}", is_valid_move(my_colour, &board, (File::D, Rank::Four), (File::A, Rank::Two))); // Fail -- no piece
 }
 
 fn print_board(board: &Board) {
