@@ -2,23 +2,59 @@ use std::fmt::{Display, Formatter, write};
 use std::io;
 use rand::Rng;
 
-const RANK_1: usize = 7;
-const RANK_2: usize = 6;
-const RANK_3: usize = 5;
-const RANK_4: usize = 4;
-const RANK_5: usize = 3;
-const RANK_6: usize = 2;
-const RANK_7: usize = 1;
-const RANK_8: usize = 0;
 
-const FILE_A: usize = 0;
-const FILE_B: usize = 1;
-const FILE_C: usize = 2;
-const FILE_D: usize = 3;
-const FILE_E: usize = 4;
-const FILE_F: usize = 5;
-const FILE_G: usize = 6;
-const FILE_H: usize = 7;
+enum Rank {
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+}
+
+impl Rank {
+    fn value(&self) -> usize {
+        match *self {
+            Rank::One => 7,
+            Rank::Two => 6,
+            Rank::Three => 5,
+            Rank::Four => 4,
+            Rank::Five => 3,
+            Rank::Six => 2,
+            Rank::Seven => 1,
+            Rank::Eight => 0,
+        }
+    }
+}
+
+
+enum File {
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+}
+
+impl File {
+    fn value(&self) -> usize {
+        match *self {
+            File::A => 0,
+            File::B => 1,
+            File::C => 2,
+            File::D => 3,
+            File::E => 4,
+            File::F => 5,
+            File::G => 6,
+            File::H => 7,
+        }
+    }
+}
 
 
 #[derive(Copy, Clone)]
@@ -176,8 +212,8 @@ fn generate_board() -> [[Square; 8]; 8] {
     ]
 }
 
-fn print_board_square(board: &[[Square; 8]; 8], file: usize, rank: usize) {
-    println!("{}", board[rank][file]);
+fn print_board_square(board: &[[Square; 8]; 8], file: File, rank: Rank) {
+    println!("{}", board[rank.value()][file.value()]);
 }
 
 fn main() {
@@ -196,8 +232,8 @@ fn main() {
 
     print_board(&board);
 
-    print_board_square(&board, FILE_D, RANK_1);
-    print_board_square(&board, FILE_E, RANK_2);
+    print_board_square(&board, File::D, Rank::One);
+    print_board_square(&board, File::E, Rank::Two);
 }
 
 fn print_board(board: &[[Square; 8]; 8]) {
