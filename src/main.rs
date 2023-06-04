@@ -99,6 +99,17 @@ impl Display for GamePiece {
     }
 }
 
+
+#[derive(Copy, Clone)]
+enum PieceKind {
+    Pawn,
+    Knight,
+    Bishop,
+    Rook,
+    Queen,
+    King,
+}
+
 impl PieceKind {
     fn name(&self) -> String {
         match *self {
@@ -121,16 +132,6 @@ impl PieceKind {
             PieceKind::King => 'K',
         }
     }
-}
-
-#[derive(Copy, Clone)]
-enum PieceKind {
-    Pawn,
-    Knight,
-    Bishop,
-    Rook,
-    Queen,
-    King,
 }
 
 
