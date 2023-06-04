@@ -76,7 +76,7 @@ impl Display for Colour {
 
 enum Square {
     Empty,
-    Piece(Piece),
+    Piece(GamePiece),
 }
 
 impl Display for Square {
@@ -88,12 +88,12 @@ impl Display for Square {
     }
 }
 
-struct Piece {
+struct GamePiece {
     colour: Colour,
     kind: PieceKind,
 }
 
-impl Display for Piece {
+impl Display for GamePiece {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} {}", self.colour, get_piece_name(self))
     }
@@ -114,7 +114,7 @@ type Board = [[Square; 8]; 8];
 type Position = (File, Rank);
 
 
-fn get_piece_name(piece: &Piece) -> String {
+fn get_piece_name(piece: &GamePiece) -> String {
     match piece.kind {
         PieceKind::Pawn => String::from("Pawn"),
         PieceKind::Knight => String::from("Knight"),
@@ -125,7 +125,7 @@ fn get_piece_name(piece: &Piece) -> String {
     }
 }
 
-fn get_piece_symbol(piece: &Piece) -> char {
+fn get_piece_symbol(piece: &GamePiece) -> char {
     match piece.kind {
         PieceKind::Pawn => 'P',
         PieceKind::Knight => 'N',
@@ -136,7 +136,7 @@ fn get_piece_symbol(piece: &Piece) -> char {
     }
 }
 
-fn generate_piece_set(colour: Colour) -> Vec<Piece> {
+fn generate_piece_set(colour: Colour) -> Vec<GamePiece> {
     const PIECE_SET: [PieceKind; 16] = [
         PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn,
         PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn, PieceKind::Pawn,
@@ -144,11 +144,11 @@ fn generate_piece_set(colour: Colour) -> Vec<Piece> {
         PieceKind::Bishop, PieceKind::Bishop, PieceKind::Queen, PieceKind::King,
     ];
 
-    let mut new_piece_set: Vec<Piece> = Vec::new();
+    let mut new_piece_set: Vec<GamePiece> = Vec::new();
 
     for i in 0..15 {
         new_piece_set.push(
-            Piece {
+            GamePiece {
                 colour,
                 kind: PIECE_SET[i]
             }
@@ -161,28 +161,24 @@ fn generate_piece_set(colour: Colour) -> Vec<Piece> {
 fn generate_board() -> Board {
     [
         [
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Rook}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Knight}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Bishop}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Queen}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::King}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Bishop}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Knight}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Rook}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Queen}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::King}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
         ],
         [
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::Black, kind: PieceKind::Pawn}),
-        ],
-        [
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
         ],
         [
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
@@ -197,24 +193,28 @@ fn generate_board() -> Board {
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
         [
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
+            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
         [
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Rook}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Knight}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Bishop}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Queen}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::King}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Bishop}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Knight}),
-            Square::Piece(Piece{colour: Colour::White, kind: PieceKind::Rook}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
+        ],
+        [
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Queen}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::King}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}),
+            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}),
         ],
     ]
 }
@@ -239,7 +239,7 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
     let source_square: &Square = &board[source_position.1.value()][source_position.0.value()];
 
     // A piece must exist on the source square
-    let source_piece: &Piece = match source_square {
+    let source_piece: &GamePiece = match source_square {
         Square::Empty => return false,
         Square::Piece(p) => p,
     };
