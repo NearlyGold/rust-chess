@@ -211,7 +211,7 @@ impl PieceKind {
 }
 
 
-type Board = [[Square; 8]; 8];
+type Board = Vec<Vec<Square>>;
 type Position = (File, Rank);
 
 
@@ -238,8 +238,8 @@ fn generate_piece_set(colour: Colour) -> Vec<GamePiece> {
 }
 
 fn generate_board() -> Board {
-    [
-        [
+    vec![
+        vec![
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}),
@@ -249,7 +249,7 @@ fn generate_board() -> Board {
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
         ],
-        [
+        vec![
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
@@ -259,23 +259,23 @@ fn generate_board() -> Board {
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
         ],
-        [
+        vec![
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
-        [
+        vec![
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
-        [
+        vec![
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
-        [
+        vec![
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
             Square::Empty, Square::Empty, Square::Empty, Square::Empty,
         ],
-        [
+        vec![
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
@@ -285,7 +285,7 @@ fn generate_board() -> Board {
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
         ],
-        [
+        vec![
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}),
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}),
             Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}),
