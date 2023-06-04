@@ -95,13 +95,13 @@ struct GamePiece {
 
 impl Display for GamePiece {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.colour, self.name())
+        write!(f, "{} {}", self.colour, self.kind.name())
     }
 }
 
-impl GamePiece {
+impl PieceKind {
     fn name(&self) -> String {
-        match self.kind {
+        match *self {
             PieceKind::Pawn => String::from("Pawn"),
             PieceKind::Knight => String::from("Knight"),
             PieceKind::Bishop => String::from("Bishop"),
@@ -112,7 +112,7 @@ impl GamePiece {
     }
 
     fn symbol(&self) -> char {
-        match self.kind {
+        match *self {
             PieceKind::Pawn => 'P',
             PieceKind::Knight => 'N',
             PieceKind::Bishop => 'B',
