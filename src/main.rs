@@ -16,7 +16,7 @@ enum Rank {
 }
 
 impl Rank {
-    fn value(&self) -> usize {
+    fn index(&self) -> usize {
         match *self {
             Rank::One => 7,
             Rank::Two => 6,
@@ -26,6 +26,19 @@ impl Rank {
             Rank::Six => 2,
             Rank::Seven => 1,
             Rank::Eight => 0,
+        }
+    }
+
+    fn value(&self) -> usize {
+        match *self {
+            Rank::One => 0,
+            Rank::Two => 1,
+            Rank::Three => 2,
+            Rank::Four => 3,
+            Rank::Five => 4,
+            Rank::Six => 5,
+            Rank::Seven => 6,
+            Rank::Eight => 7,
         }
     }
 }
@@ -44,7 +57,7 @@ enum File {
 }
 
 impl File {
-    fn value(&self) -> usize {
+    fn index(&self) -> usize {
         match *self {
             File::A => 0,
             File::B => 1,
@@ -55,6 +68,10 @@ impl File {
             File::G => 6,
             File::H => 7,
         }
+    }
+
+    fn value(&self) -> usize {
+        self.index()
     }
 }
 
@@ -223,7 +240,7 @@ fn generate_board() -> Board {
 }
 
 fn print_board_square(board: &Board, file: File, rank: Rank) {
-    println!("{}", board[rank.value()][file.value()]);
+    println!("{}", board[rank.index()][file.index()]);
 }
 
 // Rules
@@ -239,7 +256,7 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
         return false;
     }
 
-    let source_square: &Square = &board[source_position.1.value()][source_position.0.value()];
+    let source_square: &Square = &board[source_position.1.index()][source_position.0.index()];
 
     // A piece must exist on the source square
     let source_piece: &GamePiece = match source_square {
@@ -252,7 +269,7 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
         return false;
     }
 
-    let dest_square: &Square = &board[dest_position.1.value()][dest_position.0.value()];
+    let dest_square: &Square = &board[dest_position.1.index()][dest_position.0.index()];
 
     // The dest square must either be empty or have a non-king piece of the opponent's colour.
     if let Square::Piece(dest_piece) = dest_square {
