@@ -282,11 +282,6 @@ fn main() {
 
     print_board_square(&board, File::D, Rank::One);
     print_board_square(&board, File::E, Rank::Two);
-
-    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::One))); // Fail -- same square
-    println!("{}", is_valid_move(my_colour, &board, (File::A, Rank::One), (File::A, Rank::Two))); // Pass -- player piece
-    println!("{}", is_valid_move(my_colour, &board, (File::H, Rank::Eight), (File::F, Rank::Two))); // Fail -- opponent piece
-    println!("{}", is_valid_move(my_colour, &board, (File::D, Rank::Four), (File::A, Rank::Two))); // Fail -- no piece
 }
 
 fn print_board(board: &Board) {
@@ -297,5 +292,77 @@ fn print_board(board: &Board) {
             print!("{square:<width$}", square=square.to_string(), width=14);
         }
         println!("|");
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn move_to_same_square() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::A, Rank::One),
+            (File::A, Rank::One)
+        );
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn move_to_empty_square() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::E, Rank::Two),
+            (File::E, Rank::Three)
+        );
+        assert_eq!(result, true);
+    }
+
+    #[test]
+    fn move_opponent_piece() {
+        let result = is_valid_move(
+            Colour::Black,
+            &generate_board(),
+            (File::B, Rank::One),
+            (File::C, Rank::Three)
+        );
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn move_non_existent_piece() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::D, Rank::Four),
+            (File::D, Rank::Five)
+        );
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn move_onto_player_piece() {
+        let result = is_valid_move(
+            Colour::Black,
+            &generate_board(),
+            (File::D, Rank::Eight),
+            (File::D, Rank::Seven)
+        );
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn move_onto_opponent_king() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::D, Rank::One),
+            (File::E, Rank::Eight)
+        );
+        assert_eq!(result, false);
     }
 }
