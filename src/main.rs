@@ -228,8 +228,8 @@ fn print_board_square(board: &Board, file: File, rank: Rank) {
 // * A piece must exist on the source square
 // * The piece must be the current player's colour
 // * The dest square must be empty, or have a piece of the opponent's colour that is not the king.
-// * The piece must be allowed to move in the way required to reach the destination position.
-// * After moving, the player's king must not be in check.
+// * TODO: The piece must be allowed to move in the way required to reach the destination position.
+// * TODO: After moving, the player's king must not be in check.
 fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position, dest_position: Position) -> bool {
     // The source and destination positions must not be the same
     if source_position == dest_position {
