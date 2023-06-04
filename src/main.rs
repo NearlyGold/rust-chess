@@ -211,7 +211,7 @@ impl PieceKind {
 }
 
 
-type Board = Vec<Vec<Square>>;
+type BoardGrid = Vec<Vec<Square>>;
 type Position = (File, Rank);
 
 
@@ -237,7 +237,7 @@ fn generate_piece_set(colour: Colour) -> Vec<GamePiece> {
     new_piece_set
 }
 
-fn generate_board() -> Board {
+fn generate_board() -> BoardGrid {
     vec![
         vec![
             Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
@@ -298,7 +298,7 @@ fn generate_board() -> Board {
     ]
 }
 
-fn print_board_square(board: &Board, file: File, rank: Rank) {
+fn print_board_square(board: &BoardGrid, file: File, rank: Rank) {
     println!("{}", board[rank.index()][file.index()]);
 }
 
@@ -309,7 +309,7 @@ fn print_board_square(board: &Board, file: File, rank: Rank) {
 // * The dest square must be empty, or have a piece of the opponent's colour that is not the king.
 // * TODO: The piece must be allowed to move in the way required to reach the destination position.
 // * TODO: After moving, the player's king must not be in check.
-fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position, dest_position: Position) -> bool {
+fn is_valid_move(player_colour: Colour, board: &BoardGrid, source_position: Position, dest_position: Position) -> bool {
     // The source and destination positions must not be the same
     if source_position == dest_position {
         return false;
@@ -385,7 +385,7 @@ fn main() {
     print_board_square(&board, File::E, Rank::Two);
 }
 
-fn print_board(board: &Board) {
+fn print_board(board: &BoardGrid) {
     for rank in board {
         for square in rank {
             print!("| ");
