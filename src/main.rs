@@ -95,7 +95,31 @@ struct GamePiece {
 
 impl Display for GamePiece {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.colour, get_piece_name(self))
+        write!(f, "{} {}", self.colour, self.name())
+    }
+}
+
+impl GamePiece {
+    fn name(&self) -> String {
+        match self.kind {
+            PieceKind::Pawn => String::from("Pawn"),
+            PieceKind::Knight => String::from("Knight"),
+            PieceKind::Bishop => String::from("Bishop"),
+            PieceKind::Rook => String::from("Rook"),
+            PieceKind::Queen => String::from("Queen"),
+            PieceKind::King => String::from("King"),
+        }
+    }
+
+    fn symbol(&self) -> char {
+        match self.kind {
+            PieceKind::Pawn => 'P',
+            PieceKind::Knight => 'N',
+            PieceKind::Bishop => 'B',
+            PieceKind::Rook => 'R',
+            PieceKind::Queen => 'Q',
+            PieceKind::King => 'K',
+        }
     }
 }
 
@@ -113,28 +137,6 @@ enum PieceKind {
 type Board = [[Square; 8]; 8];
 type Position = (File, Rank);
 
-
-fn get_piece_name(piece: &GamePiece) -> String {
-    match piece.kind {
-        PieceKind::Pawn => String::from("Pawn"),
-        PieceKind::Knight => String::from("Knight"),
-        PieceKind::Bishop => String::from("Bishop"),
-        PieceKind::Rook => String::from("Rook"),
-        PieceKind::Queen => String::from("Queen"),
-        PieceKind::King => String::from("King"),
-    }
-}
-
-fn get_piece_symbol(piece: &GamePiece) -> char {
-    match piece.kind {
-        PieceKind::Pawn => 'P',
-        PieceKind::Knight => 'N',
-        PieceKind::Bishop => 'B',
-        PieceKind::Rook => 'R',
-        PieceKind::Queen => 'Q',
-        PieceKind::King => 'K',
-    }
-}
 
 fn generate_piece_set(colour: Colour) -> Vec<GamePiece> {
     const PIECE_SET: [PieceKind; 16] = [
