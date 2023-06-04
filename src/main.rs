@@ -239,14 +239,26 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
     let source_square: &Square = &board[source_position.1.value()][source_position.0.value()];
 
     // A piece must exist on the source square
-    let piece: &Piece = match source_square {
+    let source_piece: &Piece = match source_square {
         Square::Empty => return false,
         Square::Piece(p) => p,
     };
 
     // The source piece must be the player's colour
-    if piece.colour != player_colour {
+    if source_piece.colour != player_colour {
         return false;
+    }
+
+    let dest_square: &Square = &board[dest_position.1.value()][dest_position.0.value()];
+
+    // The dest square must either be empty or have a non-king piece of the opponent's colour.
+    if let Square::Piece(dest_piece) = dest_square {
+        if dest_piece.colour == player_colour {
+            return false;
+        }
+        if let PieceKind::King = dest_piece.kind {
+            return false;
+        }
     }
 
     true
