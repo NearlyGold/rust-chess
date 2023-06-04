@@ -125,6 +125,56 @@ impl Display for GamePiece {
     }
 }
 
+impl GamePiece {
+    fn move_vectors(&self) -> Vec<(i8, i8)> {
+        match self.kind {
+            PieceKind::Pawn => {vec![(0,1)]}
+            PieceKind::Knight => {vec![
+                (1,2),
+                (2,1),
+                (2,-1),
+                (1,-2),
+                (-1,-2),
+                (-2,-1),
+                (-2,1),
+                (-1,2),
+            ]}
+            PieceKind::Bishop => {vec![
+                (1,1),
+                (1,-1),
+                (-1,-1),
+                (-1,1),
+            ]}
+            PieceKind::Rook => {vec![
+                (0,1),
+                (0,-1),
+                (1,0),
+                (-1,0),
+            ]}
+            PieceKind::Queen => {vec![
+                (1,1),
+                (1,-1),
+                (-1,-1),
+                (-1,1),
+                (0,1),
+                (0,-1),
+                (1,0),
+                (-1,0),
+            ]}
+            PieceKind::King => {vec![
+                (1,1),
+                (1,-1),
+                (-1,-1),
+                (-1,1),
+                (0,1),
+                (0,-1),
+                (1,0),
+                (-1,0),
+            ]}
+        }
+    }
+}
+
 
 #[derive(Copy, Clone)]
 enum PieceKind {
@@ -290,6 +340,18 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
         }
     }
 
+    let mut is_movement_valid = false;
+    let move_vector = calculate_move_vector(source_position, dest_position);
+    for permissible_vector in source_piece.move_vectors() {
+        if move_vector == permissible_vector {
+            is_movement_valid = true;
+        }
+    }
+
+    if !is_movement_valid {
+        return false;
+    }
+
     true
 }
 
@@ -439,5 +501,27 @@ mod tests {
     fn calc_move_vector_one_diag_forward_right() {
         let result = calculate_move_vector((File::C, Rank::One), (File::D, Rank::Two));
         assert_eq!(result, (1, 1));
+    }
+
+    #[test]
+    fn move_white_knight_two_forward() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::B, Rank::One),
+            (File::B, Rank::Three),
+        );
+        assert_eq!(result, false);
+    }
+
+    #[test]
+    fn move_white_knight_two_forward_one_right() {
+        let result = is_valid_move(
+            Colour::White,
+            &generate_board(),
+            (File::B, Rank::One),
+            (File::C, Rank::Three),
+        );
+        assert_eq!(result, true);
     }
 }
