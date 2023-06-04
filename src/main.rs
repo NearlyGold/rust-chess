@@ -29,7 +29,7 @@ impl Rank {
         }
     }
 
-    fn value(&self) -> usize {
+    fn value(&self) -> i8 {
         match *self {
             Rank::One => 0,
             Rank::Two => 1,
@@ -70,8 +70,17 @@ impl File {
         }
     }
 
-    fn value(&self) -> usize {
-        self.index()
+    fn value(&self) -> i8 {
+        match *self {
+            File::A => 0,
+            File::B => 1,
+            File::C => 2,
+            File::D => 3,
+            File::E => 4,
+            File::F => 5,
+            File::G => 6,
+            File::H => 7,
+        }
     }
 }
 
@@ -284,6 +293,16 @@ fn is_valid_move(player_colour: Colour, board: &Board, source_position: Position
     true
 }
 
+fn calculate_move_vector(source_position: Position, dest_position: Position) -> (i8, i8) {
+    let x1 = source_position.0.value();
+    let y1 = source_position.1.value();
+
+    let x2 = dest_position.0.value();
+    let y2 = dest_position.1.value();
+
+    return (x2-x1, y2-y1);
+}
+
 fn main() {
     let my_colour = Colour::White;
 
@@ -384,5 +403,41 @@ mod tests {
             (File::E, Rank::Eight)
         );
         assert_eq!(result, false);
+    }
+
+    #[test]
+    fn calc_move_vector_same_square() {
+        let result = calculate_move_vector((File::A, Rank::One), (File::A, Rank::One));
+        assert_eq!(result, (0, 0));
+    }
+
+    #[test]
+    fn calc_move_vector_one_forward() {
+        let result = calculate_move_vector((File::A, Rank::One), (File::A, Rank::Two));
+        assert_eq!(result, (0, 1));
+    }
+
+    #[test]
+    fn calc_move_vector_one_backwards() {
+        let result = calculate_move_vector((File::D, Rank::Four), (File::D, Rank::Three));
+        assert_eq!(result, (0, -1));
+    }
+
+    #[test]
+    fn calc_move_vector_one_left() {
+        let result = calculate_move_vector((File::E, Rank::One), (File::D, Rank::One));
+        assert_eq!(result, (-1, 0));
+    }
+
+    #[test]
+    fn calc_move_vector_one_right() {
+        let result = calculate_move_vector((File::D, Rank::One), (File::E, Rank::One));
+        assert_eq!(result, (1, 0));
+    }
+
+    #[test]
+    fn calc_move_vector_one_diag_forward_right() {
+        let result = calculate_move_vector((File::C, Rank::One), (File::D, Rank::Two));
+        assert_eq!(result, (1, 1));
     }
 }
