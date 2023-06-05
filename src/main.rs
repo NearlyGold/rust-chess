@@ -3,6 +3,13 @@ use std::io;
 use rand::Rng;
 
 
+struct Board {
+    size_x: u8,
+    size_y: u8,
+    grid: BoardGrid,
+}
+
+
 #[derive(Copy, Clone, PartialEq)]
 enum Rank {
     One,
@@ -237,65 +244,62 @@ fn generate_piece_set(colour: Colour) -> Vec<GamePiece> {
     new_piece_set
 }
 
+fn set_board_square(file: File, rank: Rank, board_grid: &mut BoardGrid, square: Square) {
+    board_grid[rank.index()][file.index()] = square;
+}
+
+fn generate_empty_board_grid(size_x: u8, size_y: u8) -> BoardGrid {
+    let mut grid = Vec::new();
+    for x in 0..size_x {
+        let mut rank = Vec::new();
+        for y in 0..size_y {
+            rank.push(Square::Empty);
+        }
+        grid.push(rank);
+    }
+    grid
+}
+
 fn generate_board() -> BoardGrid {
-    vec![
-        vec![
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Queen}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::King}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}),
-        ],
-        vec![
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}),
-        ],
-        vec![
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-        ],
-        vec![
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-        ],
-        vec![
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-        ],
-        vec![
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-            Square::Empty, Square::Empty, Square::Empty, Square::Empty,
-        ],
-        vec![
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}),
-        ],
-        vec![
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Queen}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::King}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}),
-            Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}),
-        ],
-    ]
+    let mut board_grid = generate_empty_board_grid(8, 8);
+
+    set_board_square(File::A, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}));
+    set_board_square(File::B, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}));
+    set_board_square(File::C, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}));
+    set_board_square(File::D, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Queen}));
+    set_board_square(File::E, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::King}));
+    set_board_square(File::F, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Bishop}));
+    set_board_square(File::G, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Knight}));
+    set_board_square(File::H, Rank::One, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Rook}));
+
+    set_board_square(File::A, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::B, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::C, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::D, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::E, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::F, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::G, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+    set_board_square(File::H, Rank::Two, &mut board_grid, Square::Piece(GamePiece {colour: Colour::White, kind: PieceKind::Pawn}));
+
+    set_board_square(File::A, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::B, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::C, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::D, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::E, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::F, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::G, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::H, Rank::Seven, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Pawn}));
+    set_board_square(File::A, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}));
+
+    set_board_square(File::B, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}));
+    set_board_square(File::C, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}));
+    set_board_square(File::D, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Queen}));
+    set_board_square(File::E, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::King}));
+    set_board_square(File::F, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Bishop}));
+    set_board_square(File::G, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Knight}));
+    set_board_square(File::H, Rank::Eight, &mut board_grid, Square::Piece(GamePiece {colour: Colour::Black, kind: PieceKind::Rook}));
+
+    return board_grid;
 }
 
 fn print_board_square(board: &BoardGrid, file: File, rank: Rank) {
