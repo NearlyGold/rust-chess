@@ -11,16 +11,7 @@ struct Board {
 
 
 #[derive(Copy, Clone, PartialEq)]
-enum Rank {
-    One,
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-}
+enum Rank { One, Two, Three, Four, Five, Six, Seven, Eight }
 
 impl Rank {
     fn index(&self) -> usize {
@@ -52,16 +43,7 @@ impl Rank {
 
 
 #[derive(Copy, Clone, PartialEq)]
-enum File {
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-}
+enum File { A, B, C, D, E, F, G, H }
 
 impl File {
     fn index(&self) -> usize {
@@ -93,10 +75,7 @@ impl File {
 
 
 #[derive(Copy, Clone, PartialEq)]
-enum Colour {
-    White,
-    Black,
-}
+enum Colour { White, Black }
 
 impl Display for Colour {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -134,33 +113,15 @@ impl Display for GamePiece {
 
 impl GamePiece {
     fn move_vectors(&self) -> Vec<(i8, i8)> {
-        let mut horizontal_vectors = vec![
-            (0,1),
-            (0,-1),
-        ];
-        let mut vertical_vectors = vec![
-            (1,0),
-            (-1,0),
-        ];
-        let mut diagonal_vectors = vec![
-            (1,1),
-            (1,-1),
-            (-1,-1),
-            (-1,1),
-        ];
+        let mut horizontal_vectors = vec![(0,1), (0,-1)];
+        let mut vertical_vectors = vec![(1,0), (-1,0)];
+        let mut diagonal_vectors = vec![(1,1), (1,-1), (-1,-1), (-1,1)];
 
         match self.kind {
             PieceKind::Pawn => {vec![(0,1)]}
-            PieceKind::Knight => {vec![
-                (1,2),
-                (2,1),
-                (2,-1),
-                (1,-2),
-                (-1,-2),
-                (-2,-1),
-                (-2,1),
-                (-1,2),
-            ]}
+            PieceKind::Knight => {
+                vec![(1,2), (2,1), (2,-1), (1,-2), (-1,-2), (-2,-1), (-2,1), (-1,2)]
+            }
             PieceKind::Bishop => {
                 Vec::from(diagonal_vectors)
             }
