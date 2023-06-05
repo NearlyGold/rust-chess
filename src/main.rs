@@ -134,6 +134,21 @@ impl Display for GamePiece {
 
 impl GamePiece {
     fn move_vectors(&self) -> Vec<(i8, i8)> {
+        let mut horizontal_vectors = vec![
+            (0,1),
+            (0,-1),
+        ];
+        let mut vertical_vectors = vec![
+            (1,0),
+            (-1,0),
+        ];
+        let mut diagonal_vectors = vec![
+            (1,1),
+            (1,-1),
+            (-1,-1),
+            (-1,1),
+        ];
+
         match self.kind {
             PieceKind::Pawn => {vec![(0,1)]}
             PieceKind::Knight => {vec![
@@ -146,38 +161,29 @@ impl GamePiece {
                 (-2,1),
                 (-1,2),
             ]}
-            PieceKind::Bishop => {vec![
-                (1,1),
-                (1,-1),
-                (-1,-1),
-                (-1,1),
-            ]}
-            PieceKind::Rook => {vec![
-                (0,1),
-                (0,-1),
-                (1,0),
-                (-1,0),
-            ]}
-            PieceKind::Queen => {vec![
-                (1,1),
-                (1,-1),
-                (-1,-1),
-                (-1,1),
-                (0,1),
-                (0,-1),
-                (1,0),
-                (-1,0),
-            ]}
-            PieceKind::King => {vec![
-                (1,1),
-                (1,-1),
-                (-1,-1),
-                (-1,1),
-                (0,1),
-                (0,-1),
-                (1,0),
-                (-1,0),
-            ]}
+            PieceKind::Bishop => {
+                Vec::from(diagonal_vectors)
+            }
+            PieceKind::Rook => {
+                let mut vectors = Vec::new();
+                vectors.append(&mut horizontal_vectors);
+                vectors.append(&mut vertical_vectors);
+                vectors
+            }
+            PieceKind::Queen => {
+                let mut vectors = Vec::new();
+                vectors.append(&mut horizontal_vectors);
+                vectors.append(&mut vertical_vectors);
+                vectors.append(&mut diagonal_vectors);
+                vectors
+            }
+            PieceKind::King => {
+                let mut vectors = Vec::new();
+                vectors.append(&mut horizontal_vectors);
+                vectors.append(&mut vertical_vectors);
+                vectors.append(&mut diagonal_vectors);
+                vectors
+            }
         }
     }
 }
